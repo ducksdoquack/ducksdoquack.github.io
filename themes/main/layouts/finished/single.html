@@ -1,0 +1,13 @@
+{{ define "main" }}
+<h2>{{ .Params.instrument }}</h2>
+
+<div class="feed-gallery">
+    {{ $images := .Resources.ByType "image" }}
+    {{ range $images }}
+        {{ $mini := .Resize "195x q95"}}
+        <a href="{{.RelPermalink}}"><img src="{{$mini.RelPermalink}}"></img></a>
+    {{ end }}
+</div>
+
+{{ .Content }}
+{{ end }}

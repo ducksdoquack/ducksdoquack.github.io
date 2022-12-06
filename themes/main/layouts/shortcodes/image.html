@@ -1,0 +1,3 @@
+{{ $image := .Page.Resources.GetMatch (.Get "src") }}
+{{ $mini := $image.Resize "195x q95"}}
+<img src="{{$mini.RelPermalink}}"></img>

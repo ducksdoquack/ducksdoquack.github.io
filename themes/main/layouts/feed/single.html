@@ -1,0 +1,11 @@
+{{ define "main" }}
+<div class="feed-gallery">
+    {{ $feedPage := .Site.GetPage "feed" }}
+    {{ $images := $feedPage.Resources.ByType "image" }}
+    {{ $images := sort ($feedPage.Resources.ByType "image") "Exif.Date" "desc" }}
+    {{ range $images }}
+        {{ $preview := .Fill "195x195" }}
+        <a href="{{.RelPermalink}}"><img src="{{$preview.RelPermalink}}"></img></a>
+    {{ end }}
+</div>
+{{ end }}

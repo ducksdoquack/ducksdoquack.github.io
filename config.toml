@@ -1,0 +1,13 @@
+languageCode = "fr-BE"
+title = "Lescot Gilles - Luthier"
+theme = "main"
+relativeURLs = true
+timeout = 90000
+
+[params]
+  author = "Lescot Gilles"
+  description = "Fabrication de guitares classiques"
+  title = "Gilles Lescot - Luthier"
+
+[params.footer]
+  copyright = "Lescot Gilles"

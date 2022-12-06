@@ -1,0 +1,6 @@
+{{ define "main" }}
+<p>_default "list.html"</p>
+	{{ range .Data.Pages }}
+		{{ .Title }}
+	{{ end }}
+{{ end }}

@@ -1,0 +1,11 @@
+[Unit]
+Description=Website Update
+
+[Service]
+User=pi
+Group=www-data
+WorkingDirectory=/home/pi/website/scripts
+ExecStart=/home/pi/website/scripts/website-feed-watch.sh
+
+[Install]
+WantedBy=multi-user.target

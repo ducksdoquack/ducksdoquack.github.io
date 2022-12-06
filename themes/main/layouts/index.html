@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="{{ with .Site.LanguageCode }}{{ . }}{{ else }}en-US{{ end }}">
+
+{{ partial "head.html" . }}
+
+<body>
+	{{ partial "header.html" . }}
+
+	<section>
+		<h2>Des instruments stylés, réalisés avec soin.</h2>
+		<p>
+			Une poignée d'instruments seulement sortent de mon atelier chaque année;
+			entre 0 et 6 suivant les modèles et le temps que je consacre à cette activité.
+			Je ne réalise que les instruments que je conçois; je ne suis donc pas un "custom shop".
+		</p>
+		<p>
+			Cette approche permet de me focaliser pleinement sur mes instruments, leur apportant
+			le savoir-faire, le soin nécéssaire à la réalisation, et leur conférant un style
+			qui me correspond. J'espère qu'ils vous plairont aussi... 😉
+		</p>
+	</section>
+
+	<section>
+		<h2>En ce moment, en images...</h2>
+		<div class="feed-gallery">
+			{{ $feedPage := .Site.GetPage "feed" }}
+			{{ $images := first 6 (sort ($feedPage.Resources.ByType "image") "Exif.Date" "desc") }}
+			{{ range $images }}
+    			{{ $preview := .Fill "195x195" }}
+				<a href="{{.RelPermalink}}"><img src="{{$preview.RelPermalink}}"></img></a>
+			{{ end }}
+		</div>
+		<h3><a href="/feed">Voir plus</a></h3>
+	</section>
+
+	<section>
+		<h2>Instruments terminés</h2>
+		<div class="feed-gallery">
+		{{ $finishedPages := first 6 (where .Site.RegularPages "Section" "finished").ByDate.Reverse }}
+		{{ range $finishedPages }}
+			{{ $page := . }}
+			{{ $preview:= .Resources.GetMatch (printf "**%s" .Params.preview) }}
+			{{ with $preview }}
+				{{ $mini := .Resize "195x q95"}}
+				<a href="{{$page.RelPermalink}}"><img src="{{$mini.RelPermalink}}"></img></a>
+			{{ end }}
+
+		{{ end }}
+		</div>
+		<h3><a href="/finished">Voir plus</a></h3>
+	</section>
+
+	<section>
+		<h2>Anciens articles</h2>
+		{{ $blogPages := where .Site.RegularPages "Section" "blog" }}
+		{{ range $blogPages }}
+			<h3>
+				<a class="post-link" href="{{.RelPermalink}}">{{.Title}}</a>
+			</h3>
+		{{ end }}
+	</section>
+
+	{{ partial "footer.html" . }}
+
+</body>
+</html>

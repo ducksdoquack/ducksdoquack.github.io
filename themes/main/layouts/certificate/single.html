@@ -1,0 +1,83 @@
+{{ define "main" }}
+    
+    <header class="content-narrow">
+        <h1>Certificate of Authenticity</h1>
+        <p>Ceci est une copie numérique du certificat d'authenticité d'un instrument Lescot.
+           Ce certificat, ainsi que les photos associées sont stockés sur <a href="https://ipfs.io/">IPFS</a>.
+        </p>
+    </header>
+    <div class="content-normal">
+        <div class="shop-item">
+            <div class="shop-description">
+                <h3 id="model-name"></h3>
+                <p id="instrument-serial"></p>
+                <p id="instrument-description"></p>
+            </div>
+            <div id="certificate-gallery" class="columns shop-gallery col-6 col-4-sm"></div>
+        </div>
+        <ul id="cids" style="word-wrap: break-word;"></ul>
+    </div>
+
+    <script>
+        var urlParams = new URLSearchParams(window.location.search);
+        var cid = null;
+        if (urlParams.has('cid')) {
+            cid = urlParams.get('cid');
+        }
+        var modelName = document.querySelector('#model-name');
+        var instrumentDesciption = document.querySelector('#instrument-description');
+        var instrumentSerial = document.querySelector('#instrument-serial');
+        var cidsList = document.querySelector('#cids');
+        var gallery = document.querySelector('#certificate-gallery');
+        
+        if (window.fetch && cid) {
+            fetch('https://ipfs.io/ipfs/' + cid)
+            .then(function(response) {        
+                if (response.ok) {
+                    var contentType = response.headers.get("content-type");
+                    if(contentType && contentType.indexOf("application/json") !== -1) {
+                        var li = document.createElement('li');
+                        li.innerText = cid;
+                        cidsList.append(li);
+                        return response.json()
+                        .then(function(certificateJson) {
+                            modelName.innerText = certificateJson.model;
+                            instrumentSerial.innerText = `Serial number : ${certificateJson.sn}`;
+                            instrumentDesciption.innerText = certificateJson.description;
+                            Promise.all(certificateJson.ipfs_cids.map(function(cid) {
+                                fetch("https://ipfs.io/ipfs/" + cid)
+                                .then(function(response) {
+                                    var li = document.createElement('li');
+                                    li.innerText = cid;
+                                    cidsList.append(li);
+                                    const figure = document.createElement('figure');
+                                    figure.classList.add('gallery-item');
+                                    figure.innerHTML = `
+                                        <a href="#">
+                                            <img src="${response.url}" height="290" />
+                                        </a>
+                                    `;
+                                    gallery.append(figure);
+                                })}))
+                            .catch(function(error) {
+                                console.log("Network error : " + error.message);
+                            });
+                        });
+                    }
+                    else {
+                        console.log("Resource is not a valid JSON file !");
+                    }
+                }
+                else {
+                    console.log("Certificate not found !");
+                }
+            })
+            .catch(function(error) {
+                console.log("Network error : " + error.message);
+            });
+        } else {
+            console.log("Fetch API unsupported...");
+        }
+    </script>
+
+{{ end }}

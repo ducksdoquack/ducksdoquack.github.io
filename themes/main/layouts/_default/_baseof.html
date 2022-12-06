@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="{{ with .Site.LanguageCode }}{{ . }}{{ else }}en-US{{ end }}">
+
+{{ partial "head.html" . }}
+
+<body>
+	<div class="fullwidth">
+		{{ partial "header.html" . }}
+	</div>
+
+	<main role="main">
+		{{ block "main" . }}{{ end }}
+	</main>
+
+	<div class="fullwidth">
+		<div class="pre-footer content-normal">
+			{{ block "footer-articles" . }}
+				{{ partial "latest-articles.html" (dict "context" . "skipLast" 0) }}
+			{{ end }}
+		</div>
+	</div>
+	<footer class="fullwidth">
+		<div class="content-normal">
+			{{ partial "footer.html" . }}
+		</div>
+	</footer>
+</body>
+</html>

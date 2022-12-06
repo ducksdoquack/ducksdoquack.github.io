@@ -1,0 +1,14 @@
+{{ define "main" }}
+<div class="feed-gallery">
+    {{ range .Pages }}
+        {{ $page := . }}
+        {{ $preview:= .Resources.GetMatch (printf "**%s" .Params.preview) }}
+        {{ with $preview }}
+            {{ $mini := .Resize "195x q95"}}
+            <a href="{{$page.RelPermalink}}"><img src="{{$mini.RelPermalink}}"></img></a>
+        {{ end }}
+    {{ end }}
+</div>
+{{ end }}
+
+
