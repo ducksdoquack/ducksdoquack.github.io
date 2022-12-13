@@ -70,3 +70,9 @@ a:hover {
     align-items: center;
     flex-wrap: wrap;
 }
+
+@media screen and (max-width: 428px) {
+    .feed-gallery > a > img {
+        max-width: calc(100vw * 0.46);
+    }
+}
