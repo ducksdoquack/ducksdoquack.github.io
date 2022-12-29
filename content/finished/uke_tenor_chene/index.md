@@ -1,7 +1,7 @@
 ---
 date: 2022-12-23
 instrument: "Ukulélé tenor en chêne"
-preview: PB226793.JPG
+preview: PB226793_edited.jpeg
 ---
 
 - Caisse, manche et touche en chêne
